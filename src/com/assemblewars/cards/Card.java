@@ -33,6 +33,8 @@ public abstract class Card {
     protected int[] health = new int[3];
     protected int[] defence = new int[3];
     protected int[] attack = new int[3];
+    
+    protected boolean zoom;
 
     protected static int width = 150; //width of the card
     protected static int height = 200; //height of the card
@@ -46,6 +48,14 @@ public abstract class Card {
     
     protected int getState(){
         return state;
+    }
+    
+    public boolean getZoomed(){
+        return zoom;
+    }
+    
+    public void setZoom(boolean set){
+        zoom=set;
     }
     
     public static int getCardsWidth(){

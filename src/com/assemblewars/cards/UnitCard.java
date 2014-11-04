@@ -67,6 +67,9 @@ public class UnitCard extends Card {
     }
 
     public void draw(ShapeRenderer sr) {
+        if(getZoomed()==true){
+          //DO STUFF
+        }
         //SHAPE
         sr.setColor(0, 0, 0, 1);
         sr.begin(ShapeType.Filled);
