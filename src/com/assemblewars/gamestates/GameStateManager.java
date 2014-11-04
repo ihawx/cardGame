@@ -9,7 +9,6 @@ public class GameStateManager {
 
     public GameStateManager() {
         setState(PLAY);
-
     }
 
     public void setState(int state) {

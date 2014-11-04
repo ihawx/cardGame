@@ -34,8 +34,8 @@ public abstract class Card {
     protected int[] defence = new int[3];
     protected int[] attack = new int[3];
 
-    protected int width = 75 * 2; //width of the card
-    protected int height = 100 * 2; //height of the card
+    protected static int width = 150; //width of the card
+    protected static int height = 200; //height of the card
 
     protected float x; //x coord of the lower left corner
     protected float y; //z coord of the lower left corner
@@ -46,6 +46,14 @@ public abstract class Card {
     
     protected int getState(){
         return state;
+    }
+    
+    public static int getCardsWidth(){
+        return width;
+    }
+    
+    public static int getCardsHeight(){
+        return height;
     }
 
     public static int getNumberOfCountries() {

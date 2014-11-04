@@ -1,5 +1,6 @@
 package com.assemblewars.gamestates;
 
+import com.assemblewars.cards.Card;
 import com.assemblewars.cards.UnitCard;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -28,9 +29,10 @@ public class PlayState extends GameState {
         W = Gdx.graphics.getWidth();
         H = Gdx.graphics.getHeight();
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            for(int j =0; j<2; j++)
-            for (int i = 1; i < 7; i++) {
-                unit.add(new UnitCard(10, -100, 2000000 + i));
+            for (int j = 0; j < 2; j++) {
+                for (int i = 1; i < 7; i++) {
+                    unit.add(new UnitCard(10, -100, 2000000 + i));
+                }
             }
         }
         centerHand();
@@ -44,21 +46,22 @@ public class PlayState extends GameState {
         H = Gdx.graphics.getHeight();
         int coordX = Gdx.input.getX();
         int coordY = Gdx.input.getY();
+        int center = (2 * W - Card.getCardsWidth() * unit.size()) / 4;
         for (int i = 0; i < unit.size(); i++) {
-            unit.get(i).setPosition(W / 2 - 75 * unit.size() / 2 + i * 75, -100);
+            unit.get(i).setPosition(center + i * Card.getCardsWidth() / 2, -100);
             if (i < unit.size() - 1) {
-                if (coordX > W / 2 - 75 * unit.size() / 2 + i * 75 && coordX < W / 2 - 75 * unit.size() / 2 + 75 + i * 75 && coordY > H - 100) {
+                if (coordX > center + i * Card.getCardsWidth() / 2 && coordX < center + (Card.getCardsWidth() / 2) * (1 + i) && coordY > H - 100) {
                     for (int j = 0; j <= i; j++) {
-                        unit.get(j).setPosition(W / 2 - 75 * unit.size() / 2 + j * 75 - 75, -100);
+                        unit.get(j).setPosition(center + (Card.getCardsWidth() / 2) * (j - 1), -100);
                         if (j == i) {
-                            unit.get(j).setPosition(W / 2 - 75 * unit.size() / 2 + j * 75 - 75, 0);
+                            unit.get(j).setPosition(center + (Card.getCardsWidth() / 2) * (j - 1), 0);
                         }
                     }
                 }
             }
             if (i == unit.size() - 1) {
-                if (coordX > W / 2 - 75 * unit.size() / 2 + i * 75 && coordX < W / 2 - 75 * unit.size() / 2 + 150 + i * 75 && coordY > H - 100) {
-                    unit.get(i).setPosition(W / 2 - 75 * unit.size() / 2 + i * 75, 0);
+                if (coordX > center + i * Card.getCardsWidth() / 2 && coordX < center + Card.getCardsWidth() + i * Card.getCardsWidth() / 2 && coordY > H - 100) {
+                    unit.get(i).setPosition(center + i * Card.getCardsWidth() / 2, 0);
                 }
             }
         }
