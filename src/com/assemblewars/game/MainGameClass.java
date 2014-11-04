@@ -64,12 +64,12 @@ public class MainGameClass extends ApplicationAdapter {
     }
 
     public void listCountries(boolean with) {
-        FileHandle file = Gdx.files.internal("Database\\Countries.txt");;
+        FileHandle file = Gdx.files.internal("Database/Countries.txt");;
         if (with == true) {
-            file = Gdx.files.internal("Database\\Countries_Areas.txt");
+            file = Gdx.files.internal("Database/Countries_Areas.txt");
         }
         if (with == false) {
-            file = Gdx.files.internal("Database\\Countries.txt");
+            file = Gdx.files.internal("Database/Countries.txt");
         }
         BufferedReader reader = new BufferedReader(file.reader());
         List<String> lines = new ArrayList<String>();

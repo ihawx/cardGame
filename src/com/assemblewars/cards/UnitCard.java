@@ -31,13 +31,13 @@ public class UnitCard extends Card {
         cardID = ID;
         setAttributes();
         setState(0);
-        countryName = FileHandling.readLine(getCountry(), "Database\\Countries.txt");
-        countryArea = Integer.parseInt(FileHandling.readLine(getCountry(), "Database\\Countries_Areas_CA.txt"));
+        countryName = FileHandling.readLine(getCountry(), "Database/Countries.txt");
+        countryArea = Integer.parseInt(FileHandling.readLine(getCountry(), "Database/Countries_Areas_CA.txt"));
 
     }
 
     public void setAttributes() {
-        String attribute = FileHandling.readLine((cardID - 2000000), "Database\\Cards\\Units.txt");
+        String attribute = FileHandling.readLine((cardID - 2000000), "Database/Cards/Units.txt");
         String[] attributes = new String[11];
         for (int i = 0; i < 11; i++) {
             attributes[i] = "";
