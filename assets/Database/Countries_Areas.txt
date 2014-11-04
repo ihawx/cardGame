@@ -1,0 +1,218 @@
+1
+Canada
+United States of America
+Mexico
+2
+Belize
+Costa Rica
+El Salvador
+Guatemala
+Honduras
+Nicaragua
+Panama
+3
+Saint Kitts and Nevis
+Saint Lucia
+St. Vincent & the Grenadines
+Trinidad and Tobago
+Antigua and Barbuda
+Bahamas
+Barbados
+Cuba
+Dominica
+Dominican Republic
+Grenada
+Haiti
+Jamaica
+4
+Bolivia
+Brazil
+Colombia
+Ecuador
+Guyana
+Peru
+Suriname
+Venezuela
+5
+Paraguay
+Uruguay
+Chile
+Argentina
+6
+United Kingdom
+Belgium
+Luxembourg
+Ireland
+Netherlands
+France
+Monaco
+7
+Portugal
+San Marino
+Malta
+Spain
+Andorra
+Italy
+Vatican City
+8
+Germany
+Austria
+Czech Republic
+Hungary
+Liechtenstein
+Slovakia
+Slovenia
+Switzerland
+Poland
+9
+Albania
+Bosnia & Herzegovina
+Bulgaria
+Croatia
+Greece
+Montenegro
+Romania
+Serbia
+Kosovo
+Macedonia
+10
+Russia
+Ukraine
+Belarus
+Latvia
+Estonia
+Lithuania
+Moldova
+11
+Denmark
+Finland
+Iceland
+Norway
+Sweden
+12
+Turkey
+Georgia
+Cyprus
+Armenia
+Azerbaijan
+13
+Bahrain
+Iran
+Iraq
+Israel
+Jordan
+Kuwait
+Lebanon
+Oman
+Qatar
+Saudi Arabia
+Syria
+United Arab Emirates
+Yemen
+14
+Afghanistan
+Kazakhstan
+Kyrgyzstan
+Turkmenistan
+Tajikistan
+Uzbekistan
+Pakistan
+15
+Bangladesh
+Bhutan
+India
+Nepal
+Sri Lanka
+Maldives
+Burma
+Cambodia
+Laos
+Singapore
+Thailand
+Vietnam
+16
+Malaysia
+Brunei
+East Timor
+Philippines
+Indonesia
+17
+Australia
+Fiji
+Kiribati
+Marshall Islands
+Micronesia
+Nauru
+New Zealand
+Palau
+Papua New Guinea
+Samoa
+Solomon Islands
+Tonga
+Tuvalu
+Vanuatu
+18
+China
+Japan
+North Korea
+South Korea
+Mongolia
+19
+Algeria
+Morocco
+Tunisia
+Libya
+Egypt
+Chad
+Sudan
+Mali
+Mauritania
+Niger
+Cape Verde
+20
+Senegal
+Gambia
+Guinea
+Guinea-Bissau
+Sierra Leone
+Liberia
+Ivory Coast
+Burkina Faso
+Ghana
+Togo
+Benin
+21
+Nigeria
+Cameroon
+Central African Republic
+Equatorial Guinea
+Gabon
+Congo
+Democratic Republic of Congo
+Sao Tome and Principe
+22
+Ethiopia
+Eritrea
+Somalia
+South Sudan
+Djibouti
+Uganda
+Rwanda
+Burundi
+Tanzania
+Kenya
+23
+Angola
+Botswana
+Comoros
+Lesotho
+Madagascar
+Malawi
+Mauritius
+Mozambique
+Namibia
+Seychelles
+South Africa
+Swaziland
+Zambia
+Zimbabwe

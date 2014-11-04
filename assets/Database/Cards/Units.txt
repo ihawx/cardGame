@@ -1,0 +1,7 @@
+cardID;name;country;type;health;defenceA;defenceL;defenceN;attackA;attackL;attackN;
+2000001;Livgardet;79;1;15;0;10;0;0;16;0;
+2000002;JAS 39 Gripen;79;0;30;20;0;0;25;0;0;
+2000003;Saab 340;79;0;50;5;0;0;5;0;0;
+2000004;K12 HMS Malma;79;2;60;0;0;50;0;0;60;
+2000005;HMS Gavle;79;2;50;0;0;50;0;0;70;
+2000006;2. Brigadstaben;79;1;5;0;5;0;0;10;0;
