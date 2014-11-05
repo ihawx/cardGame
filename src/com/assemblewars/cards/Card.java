@@ -11,8 +11,8 @@ public abstract class Card {
     protected int state; //where the card is located
     //0 - deck
     //1 - hand
-    //2 - table
-    //3 - graveyard
+    //2 - being moved
+    //3 - table
 
     protected boolean[] type = new boolean[3]; // type of the card
     protected final int AIR = 0;
@@ -42,11 +42,11 @@ public abstract class Card {
     protected float x; //x coord of the lower left corner
     protected float y; //z coord of the lower left corner
     
-    protected void setState(int state){
+    public void setState(int state){
         this.state = state;
     }
     
-    protected int getState(){
+    public int getState(){
         return state;
     }
     

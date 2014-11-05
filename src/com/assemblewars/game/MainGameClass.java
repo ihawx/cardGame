@@ -28,9 +28,6 @@ public class MainGameClass extends ApplicationAdapter {
     private ArrayList<UnitCard> unit;
     private GameStateManager gsm;
     ShapeRenderer sr;
-    float i = 0f;
-    int k = 0;
-    int a = 0, b = 0, kk = 0;
     private SpriteBatch sb;
     private BitmapFont font;
 
