@@ -2,6 +2,7 @@ package com.assemblewars.gamestates;
 
 import com.assemblewars.cards.Card;
 import com.assemblewars.cards.UnitCard;
+import com.assemblewars.game.Screenshots;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
@@ -13,11 +14,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class PlayState extends GameState {
 
     private ArrayList<UnitCard> unit;
-    public static int W, H;
+    public static int W, H, beingMoved;
+    private boolean isPressed = false;
     ShapeRenderer sr;
     private SpriteBatch sb;
     private BitmapFont smallFont;
@@ -43,6 +47,7 @@ public class PlayState extends GameState {
     }
 
     public void update() {
+
         W = Gdx.graphics.getWidth();
         H = Gdx.graphics.getHeight();
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
@@ -53,6 +58,10 @@ public class PlayState extends GameState {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             System.exit(0);
+        }
+        
+        if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
+            Screenshots.saveScreenshot();
         }
 
         if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
@@ -67,54 +76,77 @@ public class PlayState extends GameState {
                 }
             }
         }
-        centerHand();
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+        if (!Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            isPressed = false;
+            beingMoved = 0;
+        }
+        if (isPressed) {
             int coordX = Gdx.input.getX();
-            int coordY = Gdx.input.getY();
+            int coordY = H - Gdx.input.getY();
+            unit.get(beingMoved).setState(2);
+            unit.get(beingMoved).setPosition(coordX - Card.getCardsWidth() / 2, coordY - Card.getCardsHeight() / 2);
+        }
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && isPressed == false) {
+            isPressed = true;
+            int coordX = Gdx.input.getX();
+            int coordY = H - Gdx.input.getY();
             for (int i = 0; i < unit.size(); i++) {
                 if (coordX > unit.get(i).getX() && coordX < unit.get(i).getX() + Card.getCardsWidth()
-                        && coordY < H - unit.get(i).getY() && coordY > H - unit.get(i).getY() - Card.getCardsHeight()) {
-                    unit.get(i).setState(2);
-                    unit.get(i).setPosition(coordX - Card.getCardsWidth() / 2, H - coordY - Card.getCardsHeight() / 2);
+                        && coordY > unit.get(i).getY() && coordY < unit.get(i).getY() + Card.getCardsHeight()) {
+                    beingMoved = i;
+                    break;
                 }
             }
         }
+
         for (int i = 0; i < unit.size(); i++) {
             unit.get(i).update();
         }
+        centerHand();
     }
 
     public void centerHand() {
-        
-        //prepsat, použít unit.sort?
-        
-        W = Gdx.graphics.getWidth();
-        H = Gdx.graphics.getHeight();
-        int coordX = Gdx.input.getX();
-        int coordY = Gdx.input.getY();
-        int center = (2 * W - Card.getCardsWidth() * unit.size()) / 4;
-        for (int i = 0; i < unit.size(); i++) {
-            if (unit.get(i).getState() == 1) {
-                unit.get(i).setPosition(center + i * Card.getCardsWidth() / 2, -100);                
-                if (i < unit.size() - 1) {
-                    if (coordX > center + i * Card.getCardsWidth() / 2 && coordX < center + (Card.getCardsWidth() / 2) * (1 + i) && coordY > H - 100) {
-                        for (int j = 0; j <= i; j++) {
-                            if (unit.get(j).getState() == 1) {
-                                unit.get(j).setPosition(center + (Card.getCardsWidth() / 2) * (j - 1), -100);
-                                if (j == i) {
-                                    unit.get(j).setPosition(center + (Card.getCardsWidth() / 2) * (j - 1), 0);
+        if (!isPressed) {
+            W = Gdx.graphics.getWidth();
+            H = Gdx.graphics.getHeight();
+            int cid = 0; //cards in deck
+            int coordX = Gdx.input.getX();
+            int coordY = Gdx.input.getY();            
+            Collections.sort(unit, new Comparator<UnitCard>() {
+                public int compare(UnitCard uc1, UnitCard uc2) {
+                    return uc1.getState() - uc2.getState();
+                }
+            });
+            for (int i = 0; i < unit.size(); i++) {
+                if (unit.get(i).getState() == 1) {
+                    cid++;
+                }
+            }
+            int center = (2 * W - Card.getCardsWidth() * cid) / 4; 
+            //System.out.println(cid);
+            for (int i = 0; i < cid; i++) {
+                if (unit.get(i).getState() == 1) {
+                    unit.get(i).setPosition(center + i * Card.getCardsWidth() / 2, -100);
+                    if (i < cid - 1) {
+                        if (coordX > center + i * Card.getCardsWidth() / 2 && coordX < center + (Card.getCardsWidth() / 2) * (1 + i) && coordY > H - 100) {
+                            for (int j = 0; j <= i; j++) {
+                                if (unit.get(j).getState() == 1) {
+                                    unit.get(j).setPosition(center + (Card.getCardsWidth() / 2) * (j - 1), -100);
+                                    if (j == i) {
+                                        unit.get(j).setPosition(center + (Card.getCardsWidth() / 2) * (j - 1), 0);
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                if (i == unit.size() - 1) {
-                    if (coordX > center + i * Card.getCardsWidth() / 2 && coordX < center + Card.getCardsWidth() + i * Card.getCardsWidth() / 2 && coordY > H - 100) {
-                        unit.get(i).setPosition(center + i * Card.getCardsWidth() / 2, 0);
+                    if (i == cid - 1) {
+                        if (coordX > center + i * Card.getCardsWidth() / 2 && coordX < center + Card.getCardsWidth() + i * Card.getCardsWidth() / 2 && coordY > H - 100) {
+                            unit.get(i).setPosition(center + i * Card.getCardsWidth() / 2, 0);
+                        }
                     }
                 }
-            }
 
+            }
         }
     }
 

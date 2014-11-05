@@ -1,21 +1,15 @@
 package com.assemblewars.game;
 
-import com.assemblewars.cards.Card;
 import com.assemblewars.cards.UnitCard;
 import com.assemblewars.gamestates.GameStateManager;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.MathUtils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,6 +38,7 @@ public class MainGameClass extends ApplicationAdapter {
 
         sr = new ShapeRenderer();
         unit = new ArrayList<UnitCard>();
+        
 
     }
 
@@ -52,7 +47,7 @@ public class MainGameClass extends ApplicationAdapter {
         gsm.update();
         gsm.draw();
         int W = Gdx.graphics.getWidth();
-        int H = Gdx.graphics.getHeight();
+        int H = Gdx.graphics.getHeight();        
         sb.begin();
         font.setColor(Color.WHITE);
         font.draw(sb, Integer.toString(Gdx.graphics.getFramesPerSecond()), 0, H - 10);
