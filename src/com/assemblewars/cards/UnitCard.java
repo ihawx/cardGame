@@ -1,7 +1,6 @@
 package com.assemblewars.cards;
 
 import com.assemblewars.filehandling.FileHandling;
-import com.assemblewars.gamestates.PlayState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -14,8 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 public class UnitCard extends Card {
 
     private SpriteBatch sb;
-    private BitmapFont smallFont;
-    private BitmapFont standartFont;
+    private BitmapFont font;
     String countryName;
     int countryArea;
 
@@ -25,16 +23,14 @@ public class UnitCard extends Card {
         FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("SF.ttf"));
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         parameter.size = 10;
-        smallFont = gen.generateFont(parameter);
-        parameter.size = 20;
-        standartFont = gen.generateFont(parameter);
+        font = gen.generateFont(parameter);
         gen.dispose();
 
         this.x = x;
         this.y = y;
         cardID = ID;
         setAttributes();
-        setState(1);
+        setState(0);
         countryName = FileHandling.readLine(getCountry(), "Database/Countries.txt");
         countryArea = Integer.parseInt(FileHandling.readLine(getCountry(), "Database/Countries_Areas_CA.txt"));
 
@@ -67,18 +63,13 @@ public class UnitCard extends Card {
     }
 
     public void update() {
-
+        
     }
 
     public void draw(ShapeRenderer sr) {
-        drawNormal(sr);
-        if (getZoomed() == true) {
-            drawZoomed(sr);
+        if(getZoomed()==true){
+          //DO STUFF
         }
-
-    }
-
-    public void drawNormal(ShapeRenderer sr) {
         //SHAPE
         sr.setColor(0, 0, 0, 1);
         sr.begin(ShapeType.Filled);
@@ -91,64 +82,40 @@ public class UnitCard extends Card {
 
         //TEXT        
         sb.begin();
-        smallFont.setColor(Color.YELLOW);
-        smallFont.draw(sb, "UNIT CARD", x + 5, y + height - 10);
-        smallFont.setColor(Color.CYAN);
-        smallFont.draw(sb, Integer.toString(getCardID()), x + 5, y + height - 20);
-        smallFont.setColor(Color.YELLOW);
-        smallFont.draw(sb, getTypeName(), x + 5, y + height - 30);
-        smallFont.setColor(Color.CYAN);
-        smallFont.draw(sb, getCountryName(), x + 5, y + height - 40);
-        sb.end();
-    }
-
-    public void drawZoomed(ShapeRenderer sr) {
-        //SHAPE
-        sr.setColor(Color.BLACK);
-        sr.begin(ShapeType.Filled);
-        sr.box((PlayState.W / 2 - 2 * Card.getCardsWidth()), (PlayState.H / 2 - 2 * Card.getCardsHeight()), 0, 4 * Card.getCardsWidth(), 4 * Card.getCardsHeight(), 0);
-        sr.end();
-        sr.setColor(Color.WHITE);
-        sr.begin(ShapeType.Line);
-        sr.box((PlayState.W / 2 - 2 * Card.getCardsWidth()), (PlayState.H / 2 - 2 * Card.getCardsHeight()), 0, 4 * Card.getCardsWidth(), 4 * Card.getCardsHeight(), 0);
-        sr.end();
-
-        //INFO
-        int offset = 20;
-        int centeringX = (PlayState.W / 2 - 2 * Card.getCardsWidth()) + 5;
-        int centeringY = (PlayState.H / 2 + 2 * Card.getCardsHeight()) - 10;
-        sb.begin();
-        standartFont.setColor(Color.WHITE);
-        standartFont.draw(sb, "UNIT CARD", centeringX, centeringY);
-        standartFont.draw(sb, "CARD ID: " + Integer.toString(getCardID()), centeringX, centeringY - offset);
-        offset += 20;
-        standartFont.draw(sb, "NAME: " + getName(), centeringX, centeringY - offset);
-        offset += 20;
-        standartFont.draw(sb, "TYPE: " + getTypeName(), centeringX, centeringY - offset);
-        offset += 20;
-        standartFont.draw(sb, "COUNTRY ID: " + Integer.toString(getCountry()), centeringX, centeringY - offset);
-        offset += 20;
-        standartFont.draw(sb, "COUNTRY: " + getCountryName(), centeringX, centeringY - offset);
-        offset += 20;
-        standartFont.draw(sb, "AREA ID: " + Integer.toString(getCountryArea()), centeringX, centeringY - offset);
-        offset += 20;
-        standartFont.draw(sb, "AREA NAME: " + getAreaName(), centeringX, centeringY - offset);
-        offset += 20;
-        standartFont.setColor(Color.RED);
-        standartFont.draw(sb, "HEALTH: " + getHealth(), centeringX, centeringY - offset);
-        offset += 20;
-        standartFont.setColor(Color.TEAL);
-        for (int i = 0; i < 3; i++) {
-            if (getDefence(i) != 0) {
-                standartFont.draw(sb, "DEFENCE: [" + getTypesName(i) + "]: " + getDefence(i), centeringX, centeringY - offset);
-                offset += 20;
+        font.setColor(Color.ORANGE);
+        font.draw(sb, "UNIT CARD", x + 5, y + height - 10);
+        font.setColor(Color.GREEN);
+        font.draw(sb, "CARD ID: " + Integer.toString(getCardID()), x + 5, y + height - 20);
+        font.setColor(Color.RED);
+        font.draw(sb, "NAME: " + getName(), x + 5, y + height - 30);
+        font.setColor(Color.MAGENTA);
+        font.draw(sb, "TYPE: " + getTypeName(), x + 5, y + height - 40);        
+        font.setColor(Color.YELLOW);
+        font.draw(sb, "COUNTRY ID: " + Integer.toString(getCountry()), x + 5, y + height - 50);
+        font.setColor(Color.CYAN);
+        font.draw(sb, "COUNTRY: " + getCountryName(), x + 5, y + height - 60);
+        font.setColor(Color.RED);
+        font.draw(sb, "AREA ID: " + Integer.toString(getCountryArea()), x + 5, y + height - 70);
+        font.setColor(Color.GREEN);
+        font.draw(sb, "AREA NAME: ", x + 5, y + height - 80);
+        font.draw(sb, getAreaName(), x + 5, y + height - 90);
+        font.setColor(Color.ORANGE);
+        font.draw(sb, "HEALTH: "+getHealth(), x + 5, y + height - 100);
+        int k=0;        
+        for(int i =0; i<3; i++){            
+            if(getDefence(i)!=0){
+                font.setColor(Color.WHITE);
+                font.draw(sb, "DEFENCE: ["+getTypesName(i)+"]: "+getDefence(i), x + 5, y + height - 110-k);
+                k+=10;
             }
-            if (getAttack(i) != 0) {
-                standartFont.draw(sb, "ATTACK: [" + getTypesName(i) + "]: " + getAttack(i), centeringX, centeringY - offset);
-                offset += 10;
+            if(getAttack(i)!=0){
+                font.setColor(Color.YELLOW);
+                font.draw(sb, "ATTACK: ["+getTypesName(i)+"]: "+getAttack(i), x + 5, y + height - 110-k);
+                k+=10;
             }
         }
         sb.end();
+
     }
 
     public void setPosition(float x, float y) {
