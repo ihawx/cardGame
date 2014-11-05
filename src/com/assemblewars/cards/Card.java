@@ -73,5 +73,7 @@ public abstract class Card {
     public static String getTypesName(int a){
         return typeNames[a];
     }
+	
+	
 
 }
