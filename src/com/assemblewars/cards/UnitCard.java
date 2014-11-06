@@ -35,9 +35,28 @@ public class UnitCard extends Card {
         cardID = ID;
         setAttributes();
         setState(1);
-        countryName = FileHandling.readLine(getCountry(), "Database/Countries.txt");
-        countryArea = Integer.parseInt(FileHandling.readLine(getCountry(), "Database/Countries_Areas_CA.txt"));
+        setCountryAttributes();
+    }
 
+    public void setCountryAttributes() {
+        String attribute = FileHandling.readLine(getCountry(), "Database/Countries.txt");
+        String[] attributes = new String[4];
+        for (int i = 0; i < 4; i++) {
+            attributes[i] = "";
+        }
+        int k = 0;
+        for (int i = 0; i < attribute.length(); i++) {
+            if (!String.valueOf(attribute.charAt(i)).equals(";") && !String.valueOf(attribute.charAt(i)).equals("\t")) {
+                attributes[k] += String.valueOf(attribute.charAt(i));
+            }
+            if (String.valueOf(attribute.charAt(i)).equals(";")) {
+                k++;
+            }
+        }
+        countryName = attributes[0];
+        countryArea = Integer.parseInt(attributes[1]);
+        Color1[getCountry()] = Color.valueOf(attributes[2]);
+        Color2[getCountry()] = Color.valueOf(attributes[3]);
     }
 
     public void setAttributes() {
@@ -48,7 +67,7 @@ public class UnitCard extends Card {
         }
         int k = 0;
         for (int i = 0; i < attribute.length(); i++) {
-            if (!String.valueOf(attribute.charAt(i)).equals(";")) {
+            if (!String.valueOf(attribute.charAt(i)).equals(";") && !String.valueOf(attribute.charAt(i)).equals("\t")) {
                 attributes[k] += String.valueOf(attribute.charAt(i));
             }
             if (String.valueOf(attribute.charAt(i)).equals(";")) {
@@ -80,24 +99,26 @@ public class UnitCard extends Card {
 
     public void drawNormal(ShapeRenderer sr) {
         //SHAPE
-        sr.setColor(0, 0, 0, 1);
+
         sr.begin(ShapeType.Filled);
-        sr.box(x, y, 0, width, height, 0);
-        sr.end();
         sr.setColor(1, 1, 1, 1);
-        sr.begin(ShapeType.Line);
+        //sr.begin(ShapeType.Line);
         sr.box(x, y, 0, width, height, 0);
+        sr.setColor(0.2f, 0.2f, 0.2f, 1);
+        sr.box(x + 3, y + 3, 0, width - 6, height - 6, 0);
+        //sr.end();
+
         sr.end();
 
         //TEXT        
         sb.begin();
-        smallFont.setColor(Color.YELLOW);
+        smallFont.setColor(Color1[getCountry()]);
         smallFont.draw(sb, "UNIT CARD", x + 5, y + height - 10);
-        smallFont.setColor(Color.CYAN);
+        smallFont.setColor(Color2[getCountry()]);
         smallFont.draw(sb, Integer.toString(getCardID()), x + 5, y + height - 20);
-        smallFont.setColor(Color.YELLOW);
+        smallFont.setColor(Color1[getCountry()]);
         smallFont.draw(sb, getTypeName(), x + 5, y + height - 30);
-        smallFont.setColor(Color.CYAN);
+        smallFont.setColor(Color2[getCountry()]);
         smallFont.draw(sb, getCountryName(), x + 5, y + height - 40);
         sb.end();
     }

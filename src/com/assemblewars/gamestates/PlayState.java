@@ -5,6 +5,7 @@ import com.assemblewars.cards.UnitCard;
 import com.assemblewars.game.Screenshots;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -40,6 +41,58 @@ public class PlayState extends GameState {
         parameter.size = 40;
         standartFont = gen.generateFont(parameter);
         gen.dispose();
+
+        Gdx.input.setInputProcessor(new InputProcessor() {
+
+            public boolean touchDown(int x, int y, int pointer, int button) {
+                if (button == Input.Buttons.LEFT) {
+                    y = H - y;
+                    if (x > W - Card.getCardsHeight() - 20 && x < W - Card.getCardsHeight() - 20 + Card.getCardsHeight()
+                            && y > 15 && y < 15 + Card.getCardsWidth()) {
+                        unit.add(new UnitCard(0, 0, 2000000 + (int) MathUtils.random(1, 44)));
+                        unit.get(unit.size() - 1).setState(1);
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public boolean keyDown(int keycode) {
+                return false;
+            }
+
+            @Override
+            public boolean keyUp(int keycode) {
+                return false;
+            }
+
+            @Override
+            public boolean keyTyped(char character) {
+                return false;
+            }
+
+            @Override
+            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+                return false;
+            }
+
+            @Override
+            public boolean touchDragged(int screenX, int screenY, int pointer) {
+                return false;
+            }
+
+            @Override
+            public boolean mouseMoved(int screenX, int screenY) {
+                return false;
+            }
+
+            @Override
+            public boolean scrolled(int amount) {
+                return false;
+            }
+
+        });
     }
 
     public void init() {
@@ -50,16 +103,11 @@ public class PlayState extends GameState {
 
         W = Gdx.graphics.getWidth();
         H = Gdx.graphics.getHeight();
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            for (int i = 0; i < 8; i++) {
-                unit.add(new UnitCard(10, -100, 2000000 + (int) MathUtils.random(1, 33)));
-            }
-        }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             System.exit(0);
         }
-        
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
             Screenshots.saveScreenshot();
         }
@@ -78,25 +126,28 @@ public class PlayState extends GameState {
         }
         if (!Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             isPressed = false;
-            beingMoved = 0;
+            beingMoved = -1;
         }
-        if (isPressed) {
-            int coordX = Gdx.input.getX();
-            int coordY = H - Gdx.input.getY();
-            unit.get(beingMoved).setState(2);
-            unit.get(beingMoved).setPosition(coordX - Card.getCardsWidth() / 2, coordY - Card.getCardsHeight() / 2);
-        }
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && isPressed == false) {
-            isPressed = true;
+
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && isPressed == false && unit.size() > 0) {
             int coordX = Gdx.input.getX();
             int coordY = H - Gdx.input.getY();
             for (int i = 0; i < unit.size(); i++) {
                 if (coordX > unit.get(i).getX() && coordX < unit.get(i).getX() + Card.getCardsWidth()
                         && coordY > unit.get(i).getY() && coordY < unit.get(i).getY() + Card.getCardsHeight()) {
                     beingMoved = i;
+                    isPressed = true;
                     break;
                 }
             }
+        }
+        if (isPressed) {
+            int coordX = Gdx.input.getX();
+            int coordY = H - Gdx.input.getY();
+            unit.get(beingMoved).setState(2);
+            Collections.swap(unit, beingMoved, unit.size() - 1);
+            beingMoved = unit.size() - 1;
+            unit.get(beingMoved).setPosition(coordX - Card.getCardsWidth() / 2, coordY - Card.getCardsHeight() / 2);
         }
 
         for (int i = 0; i < unit.size(); i++) {
@@ -109,9 +160,9 @@ public class PlayState extends GameState {
         if (!isPressed) {
             W = Gdx.graphics.getWidth();
             H = Gdx.graphics.getHeight();
-            int cid = 0; //cards in deck
+            int cid = 0; //cards in hand
             int coordX = Gdx.input.getX();
-            int coordY = Gdx.input.getY();            
+            int coordY = Gdx.input.getY();
             Collections.sort(unit, new Comparator<UnitCard>() {
                 public int compare(UnitCard uc1, UnitCard uc2) {
                     return uc1.getState() - uc2.getState();
@@ -122,7 +173,7 @@ public class PlayState extends GameState {
                     cid++;
                 }
             }
-            int center = (2 * W - Card.getCardsWidth() * cid) / 4; 
+            int center = (2 * W - Card.getCardsWidth() * cid) / 4;
             //System.out.println(cid);
             for (int i = 0; i < cid; i++) {
                 if (unit.get(i).getState() == 1) {

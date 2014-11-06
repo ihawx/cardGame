@@ -1,5 +1,7 @@
 package com.assemblewars.cards;
 
+import com.badlogic.gdx.graphics.Color;
+
 public abstract class Card {
 
     protected int cardID; //ID of the card in the files
@@ -22,6 +24,8 @@ public abstract class Card {
 
     protected static final int NUMBER_OF_COUNTRIES = 195;
     protected int[] country = new int[NUMBER_OF_COUNTRIES];
+    protected Color[] Color1 = new Color[NUMBER_OF_COUNTRIES];
+    protected Color[] Color2 = new Color[NUMBER_OF_COUNTRIES];
     protected int[] area;
     protected int[] organistation;
     
@@ -36,8 +40,8 @@ public abstract class Card {
     
     protected boolean zoom;
 
-    protected static int width = 150; //width of the card
-    protected static int height = 200; //height of the card
+    protected static int width = 100; //width of the card
+    protected static int height = 150; //height of the card
 
     protected float x; //x coord of the lower left corner
     protected float y; //z coord of the lower left corner
