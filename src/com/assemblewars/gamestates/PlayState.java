@@ -1,6 +1,7 @@
 package com.assemblewars.gamestates;
 
 import com.assemblewars.cards.Card;
+import com.assemblewars.cards.CommanderCard;
 import com.assemblewars.cards.UnitCard;
 import com.assemblewars.game.Screenshots;
 import com.badlogic.gdx.Gdx;
@@ -21,6 +22,7 @@ import java.util.Comparator;
 public class PlayState extends GameState {
 
     private ArrayList<UnitCard> unit;
+    private ArrayList<CommanderCard> commander;
     public static int W, H, beingMoved;
     private boolean isPressed = false;
     ShapeRenderer sr;
@@ -28,10 +30,13 @@ public class PlayState extends GameState {
     private BitmapFont smallFont;
     private BitmapFont standartFont;
 
+    public static final int MAX_CARDS_IN_HAND = 8;
+    public static int cardsInHand = 0;
+
     public PlayState(GameStateManager gsm) {
         super(gsm);
-        init();
         unit = new ArrayList<UnitCard>();
+        commander = new ArrayList<CommanderCard>();
         sr = new ShapeRenderer();
         sb = new SpriteBatch();
         FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("SF.ttf"));
@@ -41,15 +46,16 @@ public class PlayState extends GameState {
         parameter.size = 40;
         standartFont = gen.generateFont(parameter);
         gen.dispose();
-
+        init();
         Gdx.input.setInputProcessor(new InputProcessor() {
 
             public boolean touchDown(int x, int y, int pointer, int button) {
                 if (button == Input.Buttons.LEFT) {
                     y = H - y;
-                    if (x > W - Card.getCardsHeight() - 20 && x < W - Card.getCardsHeight() - 20 + Card.getCardsHeight()
-                            && y > 15 && y < 15 + Card.getCardsWidth()) {
-                        unit.add(new UnitCard(0, 0, 2000000 + (int) MathUtils.random(1, 44)));
+                    if (x > W - Card.getCardsWidth() - 20 && x < W - Card.getCardsWidth() - 20 + Card.getCardsWidth()
+                            && y > 15 && y < 15 + Card.getCardsHeight() && cardsInHand < MAX_CARDS_IN_HAND) {
+                        unit.add(new UnitCard(0, 0, 2000000 + (int) MathUtils.random(1, 56)));
+                        cardsInHand++;
                         unit.get(unit.size() - 1).setState(1);
                         return true;
                     }
@@ -96,7 +102,9 @@ public class PlayState extends GameState {
     }
 
     public void init() {
-
+        for (int i = 0; i < 3; i++) {
+            commander.add(new CommanderCard(0, 0, 1000000 + (int) MathUtils.random(1, 8)));
+        }
     }
 
     public void update() {
@@ -123,8 +131,18 @@ public class PlayState extends GameState {
                     unit.get(i).setZoom(false);
                 }
             }
+            for (int i = 0; i < commander.size(); i++) {
+                if (coordX > commander.get(i).getX() && coordX < commander.get(i).getX() + Card.getCardsWidth()
+                        && coordY < H - commander.get(i).getY() && coordY > H - commander.get(i).getY() - Card.getCardsHeight()) {
+                    commander.get(i).setZoom(true);
+                } else {
+                    commander.get(i).setZoom(false);
+                }
+            }
         }
-        if (!Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+        if (!Gdx.input.isButtonPressed(Input.Buttons.LEFT) && isPressed == true) {
+            unit.get(beingMoved).setState(3);
+            cardsInHand--;
             isPressed = false;
             beingMoved = -1;
         }
@@ -145,15 +163,27 @@ public class PlayState extends GameState {
             int coordX = Gdx.input.getX();
             int coordY = H - Gdx.input.getY();
             unit.get(beingMoved).setState(2);
-            Collections.swap(unit, beingMoved, unit.size() - 1);
-            beingMoved = unit.size() - 1;
+            //Collections.swap(unit, beingMoved, unit.size() - 1);
+            //beingMoved = unit.size() - 1;
             unit.get(beingMoved).setPosition(coordX - Card.getCardsWidth() / 2, coordY - Card.getCardsHeight() / 2);
         }
 
         for (int i = 0; i < unit.size(); i++) {
             unit.get(i).update();
         }
+
+        for (int i = 0; i < commander.size(); i++) {
+            commander.get(i).update();
+        }
         centerHand();
+        centerTable();
+        centerCommanders();
+    }
+
+    public void centerCommanders() {
+        for (int i = 0; i < commander.size(); i++) {
+            commander.get(i).setPosition(10 + i * Card.getCardsWidth() + i * Card.getCardsWidth() / 4, 10);
+        }
     }
 
     public void centerHand() {
@@ -201,6 +231,29 @@ public class PlayState extends GameState {
         }
     }
 
+    public void centerTable() {
+        if (!isPressed && unit.size() > 0) {
+            W = Gdx.graphics.getWidth();
+            H = Gdx.graphics.getHeight();
+            int cot = 0; //cards on table
+            int coordX = Gdx.input.getX();
+            int coordY = Gdx.input.getY();
+            for (int i = 0; i < unit.size(); i++) {
+                if (unit.get(i).getState() == 3) {
+                    cot++;
+                }
+            }
+            int center = (W - Card.getCardsWidth() * (3 * cot / 2)) / 2;
+            int j = 0;
+            for (int i = unit.size() - cot; i < unit.size(); i++) {
+                if (unit.get(i).getState() == 3) {
+                    unit.get(i).setPosition(center + j * Card.getCardsWidth() + j * Card.getCardsWidth() / 2, 20 + 3 * Card.getCardsWidth() / 2);
+                    j++;
+                }
+            }
+        }
+    }
+
     public void draw() {
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -209,11 +262,12 @@ public class PlayState extends GameState {
         sr.begin(ShapeType.Line);
         sr.setColor(Color.WHITE);
         sr.line(0, H / 2, W, H / 2);
+        sr.line(W / 2, 0, W / 2, H);
         sb.begin();
-        sr.box(W - Card.getCardsHeight() - 20, 15, 0, Card.getCardsHeight(), Card.getCardsWidth(), 0);
+        sr.box(W - Card.getCardsWidth() - 20, 15, 0, Card.getCardsWidth(), Card.getCardsHeight(), 0);
         standartFont.draw(sb, "DECK", W - Card.getCardsHeight(), 15 + Card.getCardsWidth() / 2);
-        sr.box(W - Card.getCardsHeight() - 20, 20 + Card.getCardsWidth(), 0, Card.getCardsHeight(), Card.getCardsWidth(), 0);
-        standartFont.draw(sb, "EFFECTS", W - Card.getCardsHeight(), 20 + 3 * Card.getCardsWidth() / 2);
+        sr.box(W - Card.getCardsWidth() - 20, 20 + Card.getCardsHeight(), 0, Card.getCardsWidth(), Card.getCardsHeight(), 0);
+        standartFont.draw(sb, "EFFECTS", W - Card.getCardsHeight() - 17, 20 + 3 * Card.getCardsWidth() / 2);
         sb.end();
         sr.end();
 
@@ -223,6 +277,15 @@ public class PlayState extends GameState {
         for (int i = 0; i < unit.size(); i++) {
             if (unit.get(i).getZoomed() == true) {
                 unit.get(i).draw(sr);
+            }
+        }
+
+        for (int i = 0; i < commander.size(); i++) {
+            commander.get(i).draw(sr);
+        }
+        for (int i = 0; i < commander.size(); i++) {
+            if (commander.get(i).getZoomed() == true) {
+                commander.get(i).draw(sr);
             }
         }
 

@@ -1,5 +1,6 @@
 package com.assemblewars.cards;
 
+import static com.assemblewars.cards.Card.width;
 import com.assemblewars.filehandling.FileHandling;
 import com.assemblewars.gamestates.PlayState;
 import com.badlogic.gdx.Gdx;
@@ -9,9 +10,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
-public class UnitCard extends Card {
+
+public class CommanderCard extends Card {
 
     private SpriteBatch sb;
     private BitmapFont smallFont;
@@ -19,7 +20,7 @@ public class UnitCard extends Card {
     String countryName;
     int countryArea;
 
-    public UnitCard(float x, float y, int ID) {
+    public CommanderCard(float x, float y, int ID) {
 
         sb = new SpriteBatch();
         FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("SF.ttf"));
@@ -34,7 +35,7 @@ public class UnitCard extends Card {
         this.y = y;
         cardID = ID;
         setAttributes();
-        setState(1);
+        setState(3);
         setCountryAttributes();
     }
 
@@ -60,9 +61,9 @@ public class UnitCard extends Card {
     }
 
     public void setAttributes() {
-        String attribute = FileHandling.readLine((cardID - 2000000), "Database/Cards/Units.txt");
-        String[] attributes = new String[11];
-        for (int i = 0; i < 11; i++) {
+        String attribute = FileHandling.readLine((cardID - 1000000), "Database/Cards/Commanders.txt");
+        String[] attributes = new String[8];
+        for (int i = 0; i < 8; i++) {
             attributes[i] = "";
         }
         int k = 0;
@@ -80,7 +81,6 @@ public class UnitCard extends Card {
         setHealth(Integer.parseInt(attributes[4]));
         for (int i = 0; i < 3; i++) {
             setDefence(Integer.parseInt(attributes[5 + i]), 0 + i);
-            setAttack(Integer.parseInt(attributes[8 + i]), 0 + i);
         }
 
     }
@@ -94,53 +94,46 @@ public class UnitCard extends Card {
         if (getZoomed() == true) {
             drawZoomed(sr);
         }
-
     }
-
-    public void drawNormal(ShapeRenderer sr) {
-        //SHAPE
-
-        sr.begin(ShapeType.Filled);
+    
+    public void drawNormal(ShapeRenderer sr){
+        sr.begin(ShapeRenderer.ShapeType.Filled);
         sr.setColor(1, 1, 1, 1);
-        //sr.begin(ShapeType.Line);
         sr.box(x, y, 0, width, height, 0);
-        sr.setColor(0.2f, 0.2f, 0.2f, 1);
+        sr.setColor(0.4f, 0.4f, 0.4f, 1);
         sr.box(x + 3, y + 3, 0, width - 6, height - 6, 0);
-        //sr.end();
-
         sr.end();
-
-        //TEXT        
+        
         sb.begin();
         smallFont.setColor(Color1[getCountry()]);
-        smallFont.draw(sb, "UNIT CARD", x + 5, y + height - 10);
+        smallFont.draw(sb, "COMMANDER", x + 5, y + height - 10);
         smallFont.setColor(Color2[getCountry()]);
         smallFont.draw(sb, Integer.toString(getCardID()), x + 5, y + height - 20);
         smallFont.setColor(Color1[getCountry()]);
         smallFont.draw(sb, getTypeName(), x + 5, y + height - 30);
         smallFont.setColor(Color2[getCountry()]);
         smallFont.draw(sb, getCountryName(), x + 5, y + height - 40);
+        smallFont.setColor(Color1[getCountry()]);
+        smallFont.draw(sb, getName(), x + 5, y + height - 50);
         sb.end();
     }
-
-    public void drawZoomed(ShapeRenderer sr) {
-        //SHAPE
+    
+    public void drawZoomed(ShapeRenderer sr){
         sr.setColor(Color.BLACK);
-        sr.begin(ShapeType.Filled);
+        sr.begin(ShapeRenderer.ShapeType.Filled);
         sr.box((PlayState.W / 2 - 2 * Card.getCardsWidth()), (PlayState.H / 2 - 2 * Card.getCardsHeight()), 0, 4 * Card.getCardsWidth(), 4 * Card.getCardsHeight(), 0);
         sr.end();
         sr.setColor(Color.WHITE);
-        sr.begin(ShapeType.Line);
+        sr.begin(ShapeRenderer.ShapeType.Line);
         sr.box((PlayState.W / 2 - 2 * Card.getCardsWidth()), (PlayState.H / 2 - 2 * Card.getCardsHeight()), 0, 4 * Card.getCardsWidth(), 4 * Card.getCardsHeight(), 0);
         sr.end();
-
-        //INFO
+        
         int offset = 20;
         int centeringX = (PlayState.W / 2 - 2 * Card.getCardsWidth()) + 5;
         int centeringY = (PlayState.H / 2 + 2 * Card.getCardsHeight()) - 10;
         sb.begin();
         standartFont.setColor(Color.WHITE);
-        standartFont.draw(sb, "UNIT CARD", centeringX, centeringY);
+        standartFont.draw(sb, "COMMANDER", centeringX, centeringY);
         standartFont.draw(sb, "CARD ID: " + Integer.toString(getCardID()), centeringX, centeringY - offset);
         offset += 20;
         standartFont.draw(sb, "NAME: " + getName(), centeringX, centeringY - offset);
@@ -166,12 +159,24 @@ public class UnitCard extends Card {
                 standartFont.draw(sb, "DEFENCE: [" + getTypesName(i) + "]: " + getDefence(i), centeringX, centeringY - offset);
                 offset += 20;
             }
-            if (getAttack(i) != 0) {
-                standartFont.draw(sb, "ATTACK: [" + getTypesName(i) + "]: " + getAttack(i), centeringX, centeringY - offset);
-                offset += 10;
-            }
         }
         sb.end();
+    }
+
+    public void setDefence(int amount, int against) {
+        defence[against] = amount;
+    }
+
+    public int getDefence(int against) {
+        return defence[against];
+    }
+
+    public void setHealth(int h) {
+        health[getType()] = h;
+    }
+
+    public int getHealth() {
+        return health[getType()];
     }
 
     public void setPosition(float x, float y) {
@@ -252,29 +257,5 @@ public class UnitCard extends Card {
 
     public String getName() {
         return name;
-    }
-
-    public void setAttack(int amount, int against) {
-        attack[against] = amount;
-    }
-
-    public int getAttack(int against) {
-        return attack[against];
-    }
-
-    public void setDefence(int amount, int against) {
-        defence[against] = amount;
-    }
-
-    public int getDefence(int against) {
-        return defence[against];
-    }
-
-    public void setHealth(int h) {
-        health[getType()] = h;
-    }
-
-    public int getHealth() {
-        return health[getType()];
     }
 }

@@ -1,0 +1,9 @@
+1000001	;	Per Sylvan	;	79	;	1	;	15	;	0	;	10	;	0	;
+1000002	;	Ivar Holmquist	;	79	;	0	;	30	;	20	;	0	;	0	;
+1000003	;	Archibald Douglas	;	79	;	0	;	50	;	5	;	0	;	0	;
+1000004	;	Carl August Ehrensward	;	79	;	2	;	60	;	0	;	0	;	50	;
+1000005	;	Curt Goransson	;	79	;	2	;	50	;	0	;	0	;	50	;
+1000006	;	Carl Eric Almgren	;	79	;	1	;	5	;	0	;	5	;	0	;
+1000007	;	Nils Skold	;	79	;	1	;	5	;	0	;	5	;	0	;
+1000008	;	Erik G. Bengtsson	;	79	;	1	;	5	;	0	;	5	;	0	;
+1000009	;	Ake Sagren	;	79	;	1	;	5	;	0	;	5	;	0	;
