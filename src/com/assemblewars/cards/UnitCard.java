@@ -4,18 +4,19 @@ import com.assemblewars.filehandling.FileHandling;
 import com.assemblewars.gamestates.PlayState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class UnitCard extends Card {
 
     private SpriteBatch sb;
     private BitmapFont smallFont;
     private BitmapFont standartFont;
+    private BitmapFont indexFont;
     String countryName;
     int countryArea;
 
@@ -28,6 +29,9 @@ public class UnitCard extends Card {
         smallFont = gen.generateFont(parameter);
         parameter.size = 20;
         standartFont = gen.generateFont(parameter);
+        gen = new FreeTypeFontGenerator(Gdx.files.internal("indicators.ttf"));
+        parameter.size = 12;
+        indexFont = gen.generateFont(parameter);
         gen.dispose();
 
         this.x = x;
@@ -36,12 +40,14 @@ public class UnitCard extends Card {
         setAttributes();
         setState(1);
         setCountryAttributes();
+        loadIndicators();
+        cardTexture = new Texture(Gdx.files.internal("Graphics/Cards/CardTemplate.png"));
     }
 
     public void setCountryAttributes() {
         String attribute = FileHandling.readLine(getCountry(), "Database/Countries.txt");
-        String[] attributes = new String[4];
-        for (int i = 0; i < 4; i++) {
+        String[] attributes = new String[5];
+        for (int i = 0; i < 5; i++) {
             attributes[i] = "";
         }
         int k = 0;
@@ -57,12 +63,13 @@ public class UnitCard extends Card {
         countryArea = Integer.parseInt(attributes[1]);
         Color1[getCountry()] = Color.valueOf(attributes[2]);
         Color2[getCountry()] = Color.valueOf(attributes[3]);
+        flag = new Texture(Gdx.files.internal("Graphics/Cards/Flags/" + attributes[4] + ".png"));
     }
 
     public void setAttributes() {
         String attribute = FileHandling.readLine((cardID - 2000000), "Database/Cards/Units.txt");
-        String[] attributes = new String[11];
-        for (int i = 0; i < 11; i++) {
+        String[] attributes = new String[12];
+        for (int i = 0; i < 12; i++) {
             attributes[i] = "";
         }
         int k = 0;
@@ -82,7 +89,8 @@ public class UnitCard extends Card {
             setDefence(Integer.parseInt(attributes[5 + i]), 0 + i);
             setAttack(Integer.parseInt(attributes[8 + i]), 0 + i);
         }
-
+        cardImage = new Texture(Gdx.files.internal("Graphics/Cards/unitImages/unitImage (" + attributes[11] + ").png"));
+        typeHeader = new Texture(Gdx.files.internal("Graphics/Cards/Headers/header (" + getType() + ").png"));
     }
 
     public void update() {
@@ -99,48 +107,67 @@ public class UnitCard extends Card {
 
     public void drawNormal(ShapeRenderer sr) {
         //SHAPE
-
-        sr.begin(ShapeType.Filled);
-        sr.setColor(1, 1, 1, 1);
-        //sr.begin(ShapeType.Line);
-        sr.box(x, y, 0, width, height, 0);
-        sr.setColor(0.2f, 0.2f, 0.2f, 1);
-        sr.box(x + 3, y + 3, 0, width - 6, height - 6, 0);
-        //sr.end();
-
+        sb.begin();
+        sb.draw(indicator[3], getX(), getY() + height - 20);
+        sb.draw(indicator[getType()], getX() + indicator[0].getWidth(), getY() + height - 20);
+        sb.draw(indicator[getType()], getX() + 2 * indicator[0].getWidth(), getY() + height - 20);
+        indexFont.setColor(Color.BLACK);
+        String ats[] = new String[5];
+        ats[0]=Integer.toString(getHealth());
+        ats[1]=Integer.toString(getDefence(getType()));
+        ats[2]=Integer.toString(getAttack(getType()));
+        indexFont.draw(sb, ats[0], getX() + indicator[0].getWidth()/2 - (ats[0].length()*indexFont.getXHeight())/2, getY() + height + 10);
+        indexFont.draw(sb, ats[1], getX() + 3*indicator[0].getWidth()/2 - (ats[1].length()*indexFont.getXHeight())/2, getY() + height + 10);
+        indexFont.draw(sb, ats[2], getX() + 5*indicator[0].getWidth()/2 - (ats[2].length()*indexFont.getXHeight())/2, getY() + height + 10);
+        for (int i = 0; i < 3; i++) {
+            int s = 0;
+            if (getDefence(i) > 0 && i != getType()) {
+                ats[3]=Integer.toString(getDefence(i));
+                sb.draw(indicator[i], getX() + 3 * indicator[i].getWidth(), getY() + height - 20);
+                indexFont.draw(sb, ats[3], getX() + 7*indicator[0].getWidth()/2 - (ats[3].length()*indexFont.getXHeight())/2, getY() + height + 10);
+                s=1;
+            }
+            if (getAttack(i) > 0 && i != getType()) {
+                ats[4]=Integer.toString(getAttack(i));
+                sb.draw(indicator[i], getX() + (3+s) * indicator[i].getWidth(), getY() + height - 20);
+                indexFont.draw(sb, ats[4], getX() + (7+2*s)*indicator[0].getWidth()/2 - (ats[4].length()*indexFont.getXHeight())/2, getY() + height + 10);
+            }
+        }
+        
+        
+        sb.draw(cardTexture, getX(), getY(), width, height);
+        sb.draw(typeHeader, getX() + 7, getY() + 165,126,18);
+        sb.draw(cardImage, getX() + 7, getY() + 92);
+        sb.draw(flag, getX() + 7, getY() + 7,126,80);
+        smallFont.setColor(Color.BLACK);
+        smallFont.draw(sb, getName(), x + 8, y + height - 13);
+        sb.end();
         sr.end();
 
-        //TEXT        
-        sb.begin();
-        smallFont.setColor(Color1[getCountry()]);
-        smallFont.draw(sb, "UNIT CARD", x + 5, y + height - 10);
-        smallFont.setColor(Color2[getCountry()]);
-        smallFont.draw(sb, Integer.toString(getCardID()), x + 5, y + height - 20);
-        smallFont.setColor(Color1[getCountry()]);
-        smallFont.draw(sb, getTypeName(), x + 5, y + height - 30);
-        smallFont.setColor(Color2[getCountry()]);
-        smallFont.draw(sb, getCountryName(), x + 5, y + height - 40);
-        sb.end();
     }
 
     public void drawZoomed(ShapeRenderer sr) {
-        //SHAPE
-        sr.setColor(Color.BLACK);
-        sr.begin(ShapeType.Filled);
-        sr.box((PlayState.W / 2 - 2 * Card.getCardsWidth()), (PlayState.H / 2 - 2 * Card.getCardsHeight()), 0, 4 * Card.getCardsWidth(), 4 * Card.getCardsHeight(), 0);
-        sr.end();
-        sr.setColor(Color.WHITE);
-        sr.begin(ShapeType.Line);
-        sr.box((PlayState.W / 2 - 2 * Card.getCardsWidth()), (PlayState.H / 2 - 2 * Card.getCardsHeight()), 0, 4 * Card.getCardsWidth(), 4 * Card.getCardsHeight(), 0);
-        sr.end();
 
+        sb.begin();
+        sb.draw(cardTexture, (PlayState.W / 2 - 2 * Card.getCardsWidth()), (PlayState.H / 2 - 2 * Card.getCardsHeight()), 4 * Card.getCardsWidth(), 4 * Card.getCardsHeight());
+        sb.end();
+
+        //SHAPE
+        /*sr.setColor(Color.BLACK);
+         sr.begin(ShapeType.Filled);
+         sr.box((PlayState.W / 2 - 2 * Card.getCardsWidth()), (PlayState.H / 2 - 2 * Card.getCardsHeight()), 0, 4 * Card.getCardsWidth(), 4 * Card.getCardsHeight(), 0);
+         sr.end();
+         sr.setColor(Color.WHITE);
+         sr.begin(ShapeType.Line);
+         sr.box((PlayState.W / 2 - 2 * Card.getCardsWidth()), (PlayState.H / 2 - 2 * Card.getCardsHeight()), 0, 4 * Card.getCardsWidth(), 4 * Card.getCardsHeight(), 0);
+         sr.end();*/
         //INFO
-        int offset = 20;
-        int centeringX = (PlayState.W / 2 - 2 * Card.getCardsWidth()) + 5;
+        int offset = 40;
+        int centeringX = (PlayState.W / 2 - 2 * Card.getCardsWidth()) + 25;
         int centeringY = (PlayState.H / 2 + 2 * Card.getCardsHeight()) - 10;
         sb.begin();
         standartFont.setColor(Color.WHITE);
-        standartFont.draw(sb, "UNIT CARD", centeringX, centeringY);
+        standartFont.draw(sb, "UNIT CARD", centeringX, centeringY - 20);
         standartFont.draw(sb, "CARD ID: " + Integer.toString(getCardID()), centeringX, centeringY - offset);
         offset += 20;
         standartFont.draw(sb, "NAME: " + getName(), centeringX, centeringY - offset);
