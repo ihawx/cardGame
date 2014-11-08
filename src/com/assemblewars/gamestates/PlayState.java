@@ -3,6 +3,7 @@ package com.assemblewars.gamestates;
 import com.assemblewars.cards.Card;
 import com.assemblewars.cards.CommanderCard;
 import com.assemblewars.cards.UnitCard;
+import com.assemblewars.filehandling.FileHandling;
 import com.assemblewars.game.Screenshots;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -15,9 +16,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PlayState extends GameState {
 
@@ -71,7 +75,11 @@ public class PlayState extends GameState {
                     y = H - y;
                     if (x > W - Card.getCardsWidth() - 20 && x < W - Card.getCardsWidth() - 20 + Card.getCardsWidth()
                             && y > 6 && y < 6 + Card.getCardsHeight() && cardsInHand < MAX_CARDS_IN_HAND) {
-                        unit.add(new UnitCard(0, 0, 2000000 + (int) MathUtils.random(1, 69)));
+                        try {
+                            unit.add(new UnitCard(0, 0, 2000000 + (int) MathUtils.random(1, FileHandling.countLines("Database/Cards/Units.txt"))));
+                        } catch (IOException ex) {
+                            Logger.getLogger(PlayState.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         cardsInHand++;
                         //cardSounds[1].play();
                         unit.get(unit.size() - 1).setState(1);
@@ -121,7 +129,11 @@ public class PlayState extends GameState {
 
     public void init() {
         for (int i = 0; i < 3; i++) {
-            commander.add(new CommanderCard(0, 0, 1000000 + (int) MathUtils.random(1, 19)));
+            try {
+                commander.add(new CommanderCard(0, 0, 1000000 + (int) MathUtils.random(1, FileHandling.countLines("Database/Cards/Commanders.txt"))));
+            } catch (IOException ex) {
+                Logger.getLogger(PlayState.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -309,18 +321,6 @@ public class PlayState extends GameState {
         sb.begin();
         sb.draw(background, 0, 0);
         sb.end();
-        //TABLE OUTLINE
-        /*sr.begin(ShapeType.Line);
-         sr.setColor(Color.WHITE);
-         //sr.line(0, H / 2, W, H / 2);
-         //sr.line(W / 2, 0, W / 2, H);
-         sb.begin();
-         sr.box(W - Card.getCardsWidth() - 20, 3, 0, Card.getCardsWidth(), Card.getCardsHeight(), 0);
-         //standartFont.draw(sb, "DECK", W - Card.getCardsHeight(), 15 + Card.getCardsWidth() / 2);
-         //sr.box(W - Card.getCardsWidth() - 20, 20 + Card.getCardsHeight(), 0, Card.getCardsWidth(), Card.getCardsHeight(), 0);
-         //standartFont.draw(sb, "EFFECTS", W - Card.getCardsHeight() - 17, 20 + 3 * Card.getCardsWidth() / 2);
-         sb.end();
-         sr.end();*/
 
         for (int i = 0; i < unit.size(); i++) {
             unit.get(i).draw(sr);
@@ -351,6 +351,8 @@ public class PlayState extends GameState {
         standartFont.dispose();
         background.dispose();
         star.dispose();
+        unit.clear();
+        commander.clear();
     }
 
 }

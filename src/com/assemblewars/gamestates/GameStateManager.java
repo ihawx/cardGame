@@ -1,14 +1,17 @@
 package com.assemblewars.gamestates;
 
+
 public class GameStateManager {
 
     private GameState gameState;
 
     public static final int MENU = 0;
     public static final int PLAY = 1;
+    public static final int DECKBUILD = 2;
 
-    public GameStateManager() {
-        setState(PLAY);
+
+    public GameStateManager() {        
+        setState(DECKBUILD);
     }
 
     public void setState(int state) {
@@ -20,6 +23,9 @@ public class GameStateManager {
         }
         if (state == PLAY) {
             gameState = new PlayState(this);
+        }
+        if (state == DECKBUILD) {
+            gameState = new DeckBuildState(this);
         }
     }
 

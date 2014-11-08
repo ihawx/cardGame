@@ -1,4 +1,4 @@
-Canada	;	1	;		;		;		;
+Canada	;	1	;	FF0000	;	FFFFFF	;	CAN	;
 United States of America	;	1 	;		;		;		;
 Mexico	;	1	;		;		;		;
 Belize	;	2	;		;		;		;
@@ -15,7 +15,7 @@ Trinidad and Tobago	;	3	;		;		;		;
 Antigua and Barbuda	;	3	;		;		;		;
 Bahamas	;	3	;		;		;		;
 Barbados	;	3	;		;		;		;
-Cuba	;	3	;		;		;		;
+Cuba	;	3	;	CC0000	;	000099	;	CUB	;
 Dominica	;	3	;		;		;		;
 Dominican Republic	;	3	;		;		;		;
 Grenada	;	3	;		;		;		;

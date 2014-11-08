@@ -1,0 +1,195 @@
+Canada
+United States of America
+Mexico
+Belize
+Costa Rica
+El Salvador
+Guatemala
+Honduras
+Nicaragua
+Panama
+Saint Kitts and Nevis
+Saint Lucia
+St. Vincent & the Grenadines
+Trinidad and Tobago
+Antigua and Barbuda
+Bahamas
+Barbados
+Cuba
+Dominica
+Dominican Republic
+Grenada
+Haiti
+Jamaica
+Bolivia
+Brazil
+Colombia
+Ecuador
+Guyana
+Peru
+Suriname
+Venezuela
+Paraguay
+Uruguay
+Chile
+Argentina
+United Kingdom
+Belgium
+Luxembourg
+Ireland
+Netherlands
+France
+Monaco
+Portugal
+San Marino
+Malta
+Spain
+Andorra
+Italy
+Vatican City
+Germany
+Austria
+Czech Republic
+Hungary
+Liechtenstein
+Slovakia
+Slovenia
+Switzerland
+Poland
+Albania
+Bosnia & Herzegovina
+Bulgaria
+Croatia
+Greece
+Montenegro
+Romania
+Serbia
+Kosovo
+Macedonia
+Russia
+Ukraine
+Belarus
+Latvia
+Estonia
+Lithuania
+Moldova
+Denmark
+Finland
+Iceland
+Norway
+Sweden
+Turkey
+Georgia
+Cyprus
+Armenia
+Azerbaijan
+Bahrain
+Iran
+Iraq
+Israel
+Jordan
+Kuwait
+Lebanon
+Oman
+Qatar
+Saudi Arabia
+Syria
+United Arab Emirates
+Yemen
+Afghanistan
+Kazakhstan
+Kyrgyzstan
+Turkmenistan
+Tajikistan
+Uzbekistan
+Pakistan
+Bangladesh
+Bhutan
+India
+Nepal
+Sri Lanka
+Maldives
+Burma
+Cambodia
+Laos
+Singapore
+Thailand
+Vietnam
+Malaysia
+Brunei
+East Timor
+Philippines
+Indonesia
+Australia
+Fiji
+Kiribati
+Marshall Islands
+Micronesia
+Nauru
+New Zealand
+Palau
+Papua New Guinea
+Samoa
+Solomon Islands
+Tonga
+Tuvalu
+Vanuatu
+China
+Japan
+North Korea
+South Korea
+Mongolia
+Algeria
+Morocco
+Tunisia
+Libya
+Egypt
+Chad
+Sudan
+Mali
+Mauritania
+Niger
+Cape Verde
+Senegal
+Gambia
+Guinea
+Guinea-Bissau
+Sierra Leone
+Liberia
+Ivory Coast
+Burkina Faso
+Ghana
+Togo
+Benin
+Nigeria
+Cameroon
+Central African Republic
+Equatorial Guinea
+Gabon
+Congo
+Democratic Republic of Congo
+Sao Tome and Principe
+Ethiopia
+Eritrea
+Somalia
+South Sudan
+Djibouti
+Uganda
+Rwanda
+Burundi
+Tanzania
+Kenya
+Angola
+Botswana
+Comoros
+Lesotho
+Madagascar
+Malawi
+Mauritius
+Mozambique
+Namibia
+Seychelles
+South Africa
+Swaziland
+Zambia
+Zimbabwe

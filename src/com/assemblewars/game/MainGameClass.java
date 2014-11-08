@@ -19,16 +19,15 @@ public class MainGameClass extends ApplicationAdapter {
 
     @Override
     public void create() {
-
-        gsm = new GameStateManager();
         sb = new SpriteBatch();
+        //
         FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("SF.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 17;
         font = gen.generateFont(parameter);
-        gen.dispose();       
-
-
+        gen.dispose();  
+        //
+        gsm = new GameStateManager();  
     }
 
     @Override
@@ -41,6 +40,11 @@ public class MainGameClass extends ApplicationAdapter {
         font.setColor(Color.WHITE);
         font.draw(sb, Integer.toString(Gdx.graphics.getFramesPerSecond()), 0, H - 10);
         sb.end();
+    }
+    
+    public void dispose(){
+        sb.dispose();
+        font.dispose();        
     }
 
 }

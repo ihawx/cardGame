@@ -22,7 +22,11 @@ public abstract class Card {
     protected Texture cardImage;
     protected Texture cardTexture;
     protected Texture typeHeader;
+    protected Texture zoomedTemplate;
+    protected Texture[] zoomedHeaders = new Texture[2];
     protected Texture[] indicator = new Texture[4];
+    protected Texture[] zoomedIcons = new Texture[3];
+    
 
     protected boolean[] type = new boolean[3]; // type of the card
     protected final int AIR = 0;
@@ -56,8 +60,14 @@ public abstract class Card {
 
     protected void loadIndicators() {
         for(int i = 0; i<4; i++){
-            indicator[i]=new Texture(Gdx.files.internal("Graphics/Cards/Indicators/indicator ("+i+").png"));
+            indicator[i]=new Texture(Gdx.files.internal("Graphics/Cards/Indicators/indicator ("+i+").png"));            
         }
+        for(int i = 0; i<2; i++){
+            zoomedHeaders[i]=new Texture(Gdx.files.internal("Graphics/Cards/Headers/header ("+(i+3)+").png"));            
+        }
+        zoomedIcons[0]=new Texture(Gdx.files.internal("Graphics/Cards/Indicators/powerupGreen_star.png"));
+        zoomedIcons[1]=new Texture(Gdx.files.internal("Graphics/Cards/Indicators/powerupGreen_shield.png"));
+        zoomedIcons[2]=new Texture(Gdx.files.internal("Graphics/Cards/Indicators/powerupGreen_bolt.png"));
     }
 
     public void setState(int state) {
